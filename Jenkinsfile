@@ -30,19 +30,16 @@ pipeline {
     }
 
     stage('Run Tests') {
-      steps {
+    steps {
         sh '''
-          . ${VENV_DIR}/bin/activate
-          mkdir -p ${REPORT_DIR}
-          pytest --junitxml=${REPORT_DIR}/results.xml --cov=. --maxfail=1 -q
+            . .venv/bin/activate
+            mkdir -p build/reports
+            export PYTHONPATH=.
+            pytest --junitxml=build/reports/results.xml --cov=. --maxfail=1 -q
         '''
-      }
-      post {
-        always {
-          junit 'build/reports/results.xml'
-        }
-      }
+      } 
     }
+
   }
 
   post {
